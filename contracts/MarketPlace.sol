@@ -72,6 +72,22 @@ contract MarketPlace is ReentrancyGuard, Ownable{
         return _listingFee;
     }
 
-    
+    function publishhNft(address nftContractAddres,uint256 id, uint256 price) public nonReentrant {
+
+        // I think _marketProductId is unnecessary on MarketItem struct
+        idToPostedMarketItems[_marketProductId] = MarketItem(_marketProductId, nftContractAddres, id, price);
+        _marketProductId++;
+
+        //check owner
+        if(msg.sender == nftContractAddres._ownerOf(id)){
+
+        IERC721(nftContractAddres).transferFrom(msg.sender, address(this), id);
+        emit MarketItemCreated(_marketProductId, nftContractAddres, id, price);
+
+        }else revert MarketPlace__NotOwner();
+
+    }
+
+   
 
 }
