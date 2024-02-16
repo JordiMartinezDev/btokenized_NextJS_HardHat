@@ -1,5 +1,29 @@
 // SPDX-License-Identifier: MIT
+
+
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations ( structs.. )
+// State variables ( addresses, mappings, uint..)
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// view & pure functions
+
 pragma solidity ^0.8.18;
+
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
@@ -28,5 +52,14 @@ contract BasicNft is ERC721 {
 
     function getTokenCounter() public view returns (uint256) {
         return s_tokenCounter;
+    }
+    function setNftApproval(address approvedAddres) public {
+
+        setApprovalForAll(approvedAddres, true);
+    }
+    //JUST A TEST
+    function getMyNftBalance(address owner) public view  returns (uint256) {
+        
+        return balanceOf(msg.sender);
     }
 }
