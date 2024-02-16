@@ -88,6 +88,26 @@ contract MarketPlace is ReentrancyGuard, Ownable{
 
     }
 
-   
+    function purchaseItem(uint256 marketProductId) payable nonReentrant{
+
+        MarketItem item = idToPostedMarketItems[marketProductId];
+
+        //check price
+        if(msg.value < item.price) revert MarketPlace__NotEnoughMoneySent();
+        
+        //sending msg.value to the seller&owner of the nft
+        item.marketProductId._ownerOf(item.tokenId).transfer(msg.value);
+        
+        //transferring the ownership of the nft to the buyer
+        item.nftContract.transferFrom(address(this),msg.sender,item.tokenId);
+        removeFromListings(marketProductId);
+
+        payable(feeMarketPlaceAddress).transfer(_listingFee);
+
+    }
+
+    function removeFromListings(uint256 marketProductId) private {
+
+    }
 
 }
